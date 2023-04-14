@@ -51,3 +51,28 @@ def test_download():
     assert actual_download_file_name == main_file_name
 
     os.remove(download_file_path)
+
+
+"""
+MODEL SEARCH OPERATIONS
+"""
+
+
+def test_search():
+    query = "MAPK"
+    results = bmservices.search(query, num_results=20)
+    assert results is not None
+    assert len(results["models"]) == 20
+
+
+
+"""
+PARAMETERS SEARCH
+"""
+
+
+def test_parameter_search():
+    query = "Cyclin"
+    results = bmservices.parameter_search(query)
+    assert results is not None
+    assert len(results["entries"]) == 10

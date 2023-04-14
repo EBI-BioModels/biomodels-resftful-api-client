@@ -46,3 +46,29 @@ def download(model_id, filename = None):
         file.write(response.content)
 
     return os.path.abspath(local_file)
+
+
+"""
+MODEL SEARCH OPERATIONS
+"""
+
+
+# GET /search
+def search(query="*:*", offset=0, num_results=10, sort="publication_year-desc", out_format="json"):
+    search_url: str = API_URL + "/search?query=" + query + "&offset=" + str(offset)
+    search_url += "&numResults=" + str(num_results) + "&sort=" + sort + "&format=" + out_format
+    results = requests.get(search_url)
+    return results.json()
+
+
+"""
+PARAMETERS SEARCH
+"""
+
+
+# GET /parameterSearch/search
+def parameter_search(query="*:*", start=0, size=10, sort="model:ascending", out_format="json"):
+    search_url: str = API_URL + "/parameterSearch/search?query=" + query + "&start=" + str(start)
+    search_url += "&size=" + str(size) + "&sort=" + sort + "&format=" + out_format
+    results = requests.get(search_url)
+    return results.json()
