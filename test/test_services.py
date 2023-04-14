@@ -6,6 +6,10 @@ utils4test.load_path()
 from src.biomodels_restful_api_client import services as bmservices
 import xml.etree.ElementTree as ET
 
+"""
+MODEL RELATED OPERATIONS
+"""
+
 
 def test_get_model_info():
     model_id = "BIOMD0000000500"

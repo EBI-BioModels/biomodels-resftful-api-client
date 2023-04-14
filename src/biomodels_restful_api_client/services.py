@@ -3,6 +3,10 @@ import requests
 
 from .constants import API_URL
 
+"""
+MODEL RELATED OPERATIONS
+"""
+
 
 # GET /{model_id}?format=json|xml
 def get_model_info(model_id, out_format="json"):
@@ -33,13 +37,13 @@ def get_model_identifiers(out_format="json"):
 
 
 # GET /model/download/{model_id}
-def download(model_id, filename = None):
-    DOWNLOAD_URL = API_URL + "/model/download/" + model_id
+def download(model_id, filename=None):
+    download_url = API_URL + "/model/download/" + model_id
     local_file = filename
     if filename is not None:
-        response = requests.get(DOWNLOAD_URL + "?filename=" + filename)
+        response = requests.get(download_url + "?filename=" + filename)
     else:
-        response = requests.get(DOWNLOAD_URL)
+        response = requests.get(download_url)
 
     # Save the file data to the local file
     with open(local_file, 'wb') as file:
