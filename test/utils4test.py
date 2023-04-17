@@ -12,3 +12,7 @@ def load_path():
         sys.path.remove(str(parent))
     except ValueError:  # Already removed
         pass
+
+
+# actually load all user-defined paths
+load_path()

@@ -1,8 +1,7 @@
 import os
+import pathlib
+import sys
 
-import utils4test
-
-utils4test.load_path()
 from src.biomodels_restful_api_client import services as bmservices
 import xml.etree.ElementTree as ET
 
@@ -67,7 +66,6 @@ def test_search():
     results = bmservices.search(query, num_results=20)
     assert results is not None
     assert len(results["models"]) == 20
-
 
 
 """
