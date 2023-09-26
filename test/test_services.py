@@ -56,6 +56,23 @@ def test_download():
     os.remove(download_file_path)
 
 
+def test_download_bulk():
+    lst_model_ids = ["BIOMD0000000501","BIOMD0000000502", "BIOMD0000000503", "BIOMD0000000504", "BIOMD0000000505"]
+    model_ids = ','.join(lst_model_ids)
+    file_download_path = bmservices.download_bulk(model_ids)
+    assert file_download_path
+    print("\n")
+
+    print(file_download_path)
+    print("\n")
+    file_size = os.path.getsize(file_download_path)
+    print("\n")
+    print("size: ", file_size)
+    assert file_size
+
+    os.remove(file_download_path)
+
+
 """
 MODEL SEARCH OPERATIONS
 """

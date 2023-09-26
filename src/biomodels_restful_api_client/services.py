@@ -65,6 +65,20 @@ def search(query="*:*", offset=0, num_results=10, sort="publication_year-desc", 
     return results.json()
 
 
+# GET /search/download
+def download_bulk(model_ids=""):
+    download_url: str = API_URL + "/search/download/models?" + model_ids
+
+    response = requests.get(download_url)
+
+    local_file = "biomodels-download.zip"
+    # Save the file data to the local file
+    with open(local_file, 'wb') as file:
+        file.write(response.content)
+
+    return os.path.abspath(local_file)
+
+
 """
 PARAMETERS SEARCH
 """
