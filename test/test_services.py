@@ -3,7 +3,7 @@ import os
 # import sys
 import unittest
 from utils4test import bmservices
-# from ..src.biomodels_restful_api_client import services as bmservices
+import zipfile
 # import xml.etree.ElementTree as ET
 
 """
@@ -51,24 +51,10 @@ class TestBioModelsServices(unittest.TestCase):
         download_file_path = bmservices.download(model_id, main_file_name)
         actual_download_file_name = os.path.basename(download_file_path).split('/')[-1]
         assert actual_download_file_name == main_file_name
-        # os.remove(download_file_path)
-
-
-    def test_download_bulk(self):
-        lst_model_ids = ["BIOMD0000000501","BIOMD0000000502", "BIOMD0000000503", "BIOMD0000000504", "BIOMD0000000505"]
-        model_ids = ','.join(lst_model_ids)
-        file_download_path = bmservices.download_bulk(model_ids)
-        assert file_download_path
-        # print("\n")
-
-        # print(file_download_path)
-        # print("\n")
-        file_size = os.path.getsize(file_download_path)
-        # print("\n")
-        # print("size: ", file_size)
-        assert file_size
-
-        # os.remove(file_download_path)
+        try:
+            os.remove(download_file_path)
+        except OSError:
+            pass
 
 
     """

@@ -2,6 +2,7 @@
 Definitions of all services in BioModels
 """
 import os
+from datetime import datetime
 from joblib import Memory
 import requests
 
@@ -82,17 +83,26 @@ def search(query="*:*", offset=0, num_results=10, sort="publication_year-desc", 
 # GET /search/download
 memory = Memory("~/.biomodels")
 @memory.cache
-def download_bulk(model_ids=""):
-    download_url: str = API_URL + "/search/download/models?" + model_ids
+def download_bulk(model_ids, save_as_file=""):
+    if model_ids is None:
+        return None
+    
+    if save_as_file is None or save_as_file == "":
+        dt = datetime.now().strftime("%Y%m%d-%H%M%S")
+        save_as_file = f"tmp/biomodels-download-{dt}.zip"
 
-    response = requests.get(download_url)
-
-    local_file = "biomodels-download.zip"
+    download_url: str = API_URL + "/search/download?models=" + model_ids
+    headers = { 
+        "Content-Type": "application/zip",
+        "Content-disposition": f'attachment;filename="{save_as_file}"'
+    }
+    response = requests.get(download_url, headers=headers, stream=True, allow_redirects=True)
     # Save the file data to the local file
-    with open(local_file, 'wb') as file:
-        file.write(response.content)
+    with open(save_as_file, mode="wb") as file:
+        for chunk in response.iter_content(chunk_size=10*1024):
+            file.write(chunk)
 
-    return os.path.abspath(local_file)
+    return os.path.abspath(save_as_file)
 
 
 """
