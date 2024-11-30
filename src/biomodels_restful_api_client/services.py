@@ -50,17 +50,26 @@ def get_model_identifiers(out_format="json"):
 # GET /model/download/{model_id}
 memory = Memory("~/.biomodels")
 @memory.cache
-def download(model_id, filename=None):
+def download(model_id, filename=None, local_file=None):
     download_url = API_URL + "/model/download/" + model_id
-    local_file = filename
     if filename is not None:
         response = requests.get(download_url + "?filename=" + filename)
     else:
-        local_file = model_id + ".omex"
         response = requests.get(download_url)
-        # Save the file data to the local file
-        with open(local_file, 'wb') as file:
-            file.write(response.content)
+
+    # Determine local file name, if not given
+    if local_file is None:
+        if filename is not None:
+            local_file = filename
+        else:
+            # make up a name for the entire archive
+            local_file = f"{model_id}.omex"
+    else:
+        local_file = model_id + ".omex"
+
+    # Save the file data to the local file
+    with open(local_file, 'wb') as file:
+        file.write(response.content)
 
     return os.path.abspath(local_file)
 
