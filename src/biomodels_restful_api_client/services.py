@@ -2,6 +2,7 @@
 Definitions of all services in BioModels
 """
 import os
+from joblib import Memory
 import requests
 
 from .constants import API_URL
@@ -12,6 +13,8 @@ MODEL RELATED OPERATIONS
 
 
 # GET /{model_id}?format=json|xml
+memory = Memory("~/.biomodels")
+@memory.cache
 def get_model_info(model_id, out_format="json"):
     response = requests.get(API_URL + "/" + model_id + "?format=" + out_format)
     if out_format == "xml":
@@ -23,6 +26,8 @@ def get_model_info(model_id, out_format="json"):
 
 
 # GET /model/files/{model_id}
+memory = Memory("~/.biomodels")
+@memory.cache
 def get_model_files_info(model_id, out_format="json"):
     response = requests.get(API_URL + "/model/files/" + model_id + "?format=" + out_format)
     if out_format == "xml":
@@ -34,22 +39,24 @@ def get_model_files_info(model_id, out_format="json"):
 
 
 # GET /model/identifiers
+memory = Memory("~/.biomodels")
+@memory.cache
 def get_model_identifiers(out_format="json"):
     response = requests.get(API_URL + "/model/identifiers?format=" + out_format)
     return response.json()
 
 
 # GET /model/download/{model_id}
+memory = Memory("~/.biomodels")
+@memory.cache
 def download(model_id, filename=None):
     download_url = API_URL + "/model/download/" + model_id
     local_file = filename
     if filename is not None:
         response = requests.get(download_url + "?filename=" + filename)
-        print(response.status_code)	
     else:
         local_file = model_id + ".omex"
         response = requests.get(download_url)
-        print(response.status_code)
         # Save the file data to the local file
         with open(local_file, 'wb') as file:
             file.write(response.content)
@@ -63,6 +70,8 @@ MODEL SEARCH OPERATIONS
 
 
 # GET /search
+memory = Memory("~/.biomodels")
+@memory.cache
 def search(query="*:*", offset=0, num_results=10, sort="publication_year-desc", out_format="json"):
     search_url: str = API_URL + "/search?query=" + query + "&offset=" + str(offset)
     search_url += "&numResults=" + str(num_results) + "&sort=" + sort + "&format=" + out_format
@@ -71,6 +80,8 @@ def search(query="*:*", offset=0, num_results=10, sort="publication_year-desc", 
 
 
 # GET /search/download
+memory = Memory("~/.biomodels")
+@memory.cache
 def download_bulk(model_ids=""):
     download_url: str = API_URL + "/search/download/models?" + model_ids
 
@@ -90,6 +101,8 @@ PARAMETERS SEARCH
 
 
 # GET /parameterSearch/search
+memory = Memory("~/.biomodels")
+@memory.cache
 def parameter_search(query="*:*", start=0, size=10, sort="model:ascending", out_format="json"):
     search_url: str = API_URL + "/parameterSearch/search?query=" + query + "&start=" + str(start)
     search_url += "&size=" + str(size) + "&sort=" + sort + "&format=" + out_format
