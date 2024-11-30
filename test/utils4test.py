@@ -1,4 +1,4 @@
-import sys
+import os, sys
 from pathlib import Path
 
 
@@ -16,3 +16,8 @@ def load_path():
 
 # actually load all user-defined paths
 load_path()
+
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+
+import src.biomodels_restful_api_client.constants as bmconstants
+import src.biomodels_restful_api_client.services as bmservices
