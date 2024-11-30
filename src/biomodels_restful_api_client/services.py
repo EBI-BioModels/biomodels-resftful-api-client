@@ -1,3 +1,6 @@
+"""
+Definitions of all services in BioModels
+"""
 import os
 import requests
 
@@ -42,14 +45,14 @@ def download(model_id, filename=None):
     local_file = filename
     if filename is not None:
         response = requests.get(download_url + "?filename=" + filename)
-    	print(response.status_code)	
+        print(response.status_code)	
     else:
-	local_file = model_id + ".omex"
+        local_file = model_id + ".omex"
         response = requests.get(download_url)
-	print(response.status_code)
-    # Save the file data to the local file
-    with open(local_file, 'wb') as file:
-        file.write(response.content)
+        print(response.status_code)
+        # Save the file data to the local file
+        with open(local_file, 'wb') as file:
+            file.write(response.content)
 
     return os.path.abspath(local_file)
 
