@@ -98,7 +98,7 @@ def download_bulk(model_ids, save_as_file=""):
     
     if save_as_file is None or save_as_file == "":
         dt = datetime.now().strftime("%Y%m%d-%H%M%S")
-        save_as_file = f"tmp/biomodels-download-{dt}.zip"
+        save_as_file = f"biomodels-download-{dt}.zip"
 
     download_url: str = API_URL + "/search/download?models=" + model_ids
     headers = { 
